@@ -30,7 +30,7 @@ void printMatrix(int matrix[MAX_ROWS][MAX_COLS], int rows, int cols, int cursorX
         }
         printf("\n");
     }
-    printf("\nUse arrow keys to move, type number to edit, BACKSPACE to erase, ESC to finish.\n");
+    printf("\nUse arrow keys to move, type number to edit, BACKSPACE to erase, ESC to finish, C to cancel.\n");
 }
 
 int retry = 1;
@@ -56,6 +56,13 @@ do{
 
     while (1) {
         int ch = _getch();
+        
+    // --- Cancel option ---
+        if (ch == 'c' || ch == 'C') {
+		    printf("\n\nInput cancelled by user.\n");
+		    goto END_INPUT;
+		}
+
         if (ch == 27) break; // ESC to finish
 
         if (ch == 224) { // arrow keys
@@ -85,7 +92,7 @@ do{
         printMatrix(matrix, rows, cols, cursorX, cursorY);
         // Move cursor inside highlighted cell
         gotoxy(cursorX * CELL_WIDTH, MATRIX_START_Y + cursorY);
-        gotoxy(cursorX * CELL_WIDTH + index, MATRIX_START_Y + cursorY); // move cursor to end of input
+        /*gotoxy(cursorX * CELL_WIDTH + index, MATRIX_START_Y + cursorY); // move cursor to end of input*/
     }
 
     // Count zeros and non-zeros
@@ -117,10 +124,12 @@ do{
 	            }
 	
 	    // Display 3-tuple array
-	    printf("\nGenerated 3-Tuple Array (ArrNew):\nRow\tCol\tValue\n");
+	    printf("\n\nGenerated 3-Tuple Array (ArrNew):\nRow\tCol\tValue\n");
 	    for (i = 0; i <= nonZeroCount; i++)
 	        printf("%d\t%d\t%d\n", ArrNew[i][0], ArrNew[i][1], ArrNew[i][2]);
 	}
+	// ===== when cancelled, jump here =====
+	END_INPUT:
         // --- Ask if user wants to retry ---
     printf("\nDo you want to retry? (1 = Yes, 0 = No): ");
     scanf("%d", &retry);
